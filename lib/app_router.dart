@@ -7,6 +7,7 @@ import 'package:shows_hub/presentation/screens/character_details_screen.dart';
 import 'package:shows_hub/presentation/screens/characters_screen.dart';
 
 import 'constants/strings.dart';
+import 'data/models/character_model.dart';
 
 class AppRouter {
   late CharacterRepository characterRepository;
@@ -28,8 +29,16 @@ class AppRouter {
           ),
         );
       case charactersDetailsScreenRoute:
+        final character = settings.arguments as Character;
         return MaterialPageRoute(
-            builder: (_) => const CharacterDetailsScreen());
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) =>
+                CharacterCubit(characterRepository),
+            child: CharacterDetailsScreen(
+              character: character,
+            ),
+          ),
+        );
     }
   }
 }
